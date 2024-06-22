@@ -43,7 +43,7 @@ jobs:
 
       - name: Build Docker image
         if: ${{ github.event_name == 'push' && github.ref == 'refs/heads/master' }}
-        run: docker build -t ${{ secrets.DOCKER_USERNAME }}/nodejsapp:${{ github.sha }}
+        run: docker build -t ${{ secrets.DOCKER_USERNAME }}/nodejsapp:${{ github.sha }} .
 
       - name: Push Docker image
         if: ${{ github.event_name == 'push' && github.ref == 'refs/heads/master' }}
