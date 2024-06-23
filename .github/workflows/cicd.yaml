@@ -42,8 +42,8 @@ jobs:
         with:
           node-version: '14'
 
-      - name: Install ESLint
-        run: npm install eslint --save-dev
+      - name: Install dependencies
+        run: npm install
 
       - name: Run ESLint
         run: npx eslint .
@@ -68,7 +68,7 @@ jobs:
         run: npm audit
 
   docker-build-push:
-    if: github.event_name == 'pull_request' && github.event.pull_request.merged == true
+    if: github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
 
     steps:
