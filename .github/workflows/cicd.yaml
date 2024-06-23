@@ -42,18 +42,19 @@ jobs:
         run: semgrep --config "p/ci" .
 
       - name: Build Docker image
-        if: ${{ github.event_name == 'push' && github.ref == 'refs/heads/main' }}
-        run: docker build -t ${{ secrets.DOCKER_USERNAME }}/nodejsapp:${{ github.sha }} .
+        if: ${{ github.event_name == 'push' && github.ref == 'refs/heads/master' }}
+        run: docker build -t ${{ secrets.DOCKER_USERNAME }}/nodejsapp:${{ github.sha }}
 
       - name: Push Docker image
-        if: ${{ github.event_name == 'push' && github.ref == 'refs/heads/main' }}
+        if: ${{ github.event_name == 'push' && github.ref == 'refs/heads/master' }}
         run: |
           echo ${{ secrets.DOCKER_PASSWORD }} | docker login -u ${{ secrets.DOCKER_USERNAME }} --password-stdin
           docker push ${{ secrets.DOCKER_USERNAME }}/nodejsapp:${{ github.sha }}
+
       - name: Display Docker image checksum
-        if: ${{ github.event_name == 'push' && github.ref == 'refs/heads/main' }}
+        if: ${{ github.event_name == 'push' && github.ref == 'refs/heads/master' }}
         run: docker inspect --format='{{index .RepoDigests 0}}' ${{ secrets.DOCKER_USERNAME }}/nodejsapp:${{ github.sha }}
 
       - name: Security scan with Trivy
-        if: ${{ github.event_name == 'push' && github.ref == 'refs/heads/main' }}
+        if: ${{ github.event_name == 'push' && github.ref == 'refs/heads/master' }}
         run: trivy image ${{ secrets.DOCKER_USERNAME }}/nodejsapp:${{ github.sha }}
