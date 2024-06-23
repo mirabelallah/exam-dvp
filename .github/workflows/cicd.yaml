@@ -3,7 +3,6 @@ name: CI/CD Pipeline
 on:
   push:
     branches:
-      - 'feature/*'
       - master
   pull_request:
     branches:
